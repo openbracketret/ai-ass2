@@ -1,18 +1,44 @@
-import math
+from classes.city import City
+from classes.member import Member
+from classes.gp import GP
 
 
+def main():
 
-EARTH_RADIUS = 6371
+    # Start by reading the file and getting all the lats and longs
 
-def get_distance(lat_long1, lat_long2):
+    filename = input("Please input TSP file name: ")
 
-    x1 = EARTH_RADIUS * math.cos(lat_long1[0]) * math.cos(lat_long1[1])
-    x2 = EARTH_RADIUS * math.cos(lat_long2[0]) * math.cos(lat_long2[1])
+    file = open(filename, 'r')
 
-    y1 = EARTH_RADIUS * math.cos(lat_long1[0]) * math.sin(lat_long1[1])
-    y2 = EARTH_RADIUS * math.cos(lat_long2[0]) * math.sin(lat_long2[1])
+    lines = file.readlines()
 
-    z1 = EARTH_RADIUS * math.sin(lat_long1[0])
-    z2 = EARTH_RADIUS * math.sin(lat_long2[0])
+    temp = []
+    passed_headers = False
+    for line in lines:
+        test_split = line.split(" ")
+        test_split = [x.replace("\n", "") for x in test_split]
+        if not passed_headers:
+            try:
+                test = test_split[0]
+                # print(test)
+                test = int(test)
+                passed_headers = True
+            except Exception as _:
+                continue
+        if len(test_split) == 1:
+            continue
+        temp.append((float(test_split[1]), float(test_split[2])))
 
-    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2)
+    init_population = []
+    for item in temp:
+        init_population.append(City(item[0], item[1]))
+
+    program = GP(init_population, 50, 100, 10, 1)
+
+    print(program.calculate_member_distances())
+    program.sort_population()
+    print("memes")
+
+
+main()
