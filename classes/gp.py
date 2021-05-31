@@ -2,6 +2,8 @@ import random
 import operator
 from .member import Member
 
+import math
+
 
 class GP:
 
@@ -18,6 +20,8 @@ class GP:
             temp.append(Member(list(self.init_population)))
         self.population = temp
 
+        self.current_generation = 1
+
 
     def calculate_member_distances(self):
         max = 0
@@ -30,3 +34,23 @@ class GP:
 
     def sort_population(self):
         self.population.sort(key=operator.attrgetter('route_length'))
+
+    def get_elites(self):
+        total_elites = math.ceil(self.population_size / self.elite_perc)
+        return self.population[0:total_elites]
+
+    def get_total_elites(self):
+        return math.ceil(self.population_size / self.elite_perc)
+
+    def get_total_mute_rate(self):
+        return math.ceil(self.population_size / self.mute_rate)
+
+    def next_generation(self):
+
+        # Mutation first
+
+        for i in range(0, self.get_total_mute_rate()):
+            temp_member = random.choice(self.population[self.get_total_elites():])
+            temp_member.mutate_route()
+
+        

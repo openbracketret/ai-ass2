@@ -19,3 +19,15 @@ class Member:
         self.route_length = temp_total
         return self.route_length
 
+    def mutate_route(self):
+
+        import random
+
+        item_1 = random.choice(self.route)
+        item_2 = random.choice(self.route)
+
+        index1 = self.route.index(item_1)
+        index2 = self.route.index(item_2)
+
+        self.route[index1], self.route[index2] = self.route[index2], self.route[index1]
+
