@@ -7,9 +7,9 @@ def main():
 
     # Start by reading the file and getting all the lats and longs
 
-    filename = input("Please input TSP file name: ")
+    # filename = input("Please input TSP file name: ")
 
-    file = open(filename, 'r')
+    file = open("wi29.tsp", 'r')
 
     lines = file.readlines()
 
@@ -33,12 +33,19 @@ def main():
     init_population = []
     for item in temp:
         init_population.append(City(item[0], item[1]))
-
-    program = GP(init_population, 50, 100, 10, 1)
+    TOTAL_GENS = 100
+    program = GP(init_population, 50, TOTAL_GENS, 10, 10, 1)
 
     print(program.calculate_member_distances())
     program.sort_population()
     print("memes")
+
+    for i in range(0, TOTAL_GENS):
+        print("Run: {}".format(i))
+        program.calculate_member_distances()
+        program.sort_population()
+        print("Best: {}".format(program.get_best_distance()))
+        program.next_generation()
 
 
 main()

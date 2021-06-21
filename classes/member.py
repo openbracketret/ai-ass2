@@ -31,3 +31,11 @@ class Member:
 
         self.route[index1], self.route[index2] = self.route[index2], self.route[index1]
 
+    def cross_route(self, other):
+
+        import random
+
+        item_1 = random.choice(self.route)
+        index1 = self.route.index(item_1)
+
+        
